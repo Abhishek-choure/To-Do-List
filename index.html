@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A modern task manager to organize daily tasks and track progress.">
+    <title>TaskFlow | To-Do List App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#" class="brand">
+                <span class="brand-icon">✓</span>
+                <span>TaskFlow</span>
+            </a>
+
+            <div class="sidebar-label">WORKSPACE</div>
+
+            <nav class="sidebar-nav" aria-label="Task filters">
+                <button class="nav-item active" data-filter="all">
+                    <span>▦</span> All Tasks
+                    <span class="nav-count" id="sidebar-all">0</span>
+                </button>
+
+                <button class="nav-item" data-filter="active">
+                    <span>◷</span> In Progress
+                    <span class="nav-count" id="sidebar-active">0</span>
+                </button>
+
+                <button class="nav-item" data-filter="completed">
+                    <span>✓</span> Completed
+                    <span class="nav-count" id="sidebar-completed">0</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-tip">
+                    <span class="tip-icon">✦</span>
+                    <h3>Stay focused!</h3>
+                    <p>Small steps every day lead to big results.</p>
+                </div>
+                <p class="sidebar-footer">TaskFlow · Personal Workspace</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">YOUR WORKSPACE</p>
+                    <h1>My Tasks</h1>
+                </div>
+                <div class="date-badge">
+                    <span>◷</span>
+                    <span id="current-date">Today</span>
+                </div>
+            </header>
+
+            <section class="welcome-section">
+                <div>
+                    <p class="welcome-label">YOUR DAILY OVERVIEW</p>
+                    <h2>Make today count. <span>✦</span></h2>
+                    <p class="welcome-description">
+                        Organize your work, focus on what matters, and get things done.
+                    </p>
+                </div>
+                <div class="welcome-art" aria-hidden="true">
+                    <span class="art-circle circle-one"></span>
+                    <span class="art-circle circle-two"></span>
+                    <span class="art-check">✓</span>
+                </div>
+            </section>
+
+            <!-- Statistics -->
+            <section class="stats-grid" aria-label="Task statistics">
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <span>Total Tasks</span>
+                        <span class="stat-icon purple">▦</span>
+                    </div>
+                    <p class="stat-number" id="total-count">0</p>
+                    <p class="stat-caption">Tasks in your workspace</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <span>In Progress</span>
+                        <span class="stat-icon orange">◷</span>
+                    </div>
+                    <p class="stat-number" id="active-count">0</p>
+                    <p class="stat-caption">Still to be completed</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <span>Completed</span>
+                        <span class="stat-icon green">✓</span>
+                    </div>
+                    <p class="stat-number" id="completed-count">0</p>
+                    <p class="stat-caption">Tasks completed so far</p>
+                </article>
+            </section>
+
+            <!-- Progress -->
+            <section class="progress-card">
+                <div class="progress-info">
+                    <div>
+                        <h3>Daily progress</h3>
+                        <p>Keep going — every task counts!</p>
+                    </div>
+                    <strong id="progress-percent">0%</strong>
+                </div>
+                <div
+                    class="progress-track"
+                    role="progressbar"
+                    aria-label="Task completion progress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    id="progress-track"
+                >
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </section>
+
+            <!-- Add Task -->
+            <section class="task-panel">
+                <div class="section-heading">
+                    <div>
+                        <h2>Add a new task</h2>
+                        <p>What would you like to accomplish?</p>
+                    </div>
+                </div>
+
+                <form id="task-form" class="task-form">
+                    <label class="visually-hidden" for="task-input">Task title</label>
+                    <input
+                        type="text"
+                        id="task-input"
+                        placeholder="e.g. Complete JavaScript assignment..."
+                        maxlength="150"
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" class="primary-button" id="submit-button">
+                        <span>＋</span> Add Task
+                    </button>
+                </form>
+                <p id="form-message" class="form-message" aria-live="polite"></p>
+            </section>
+
+            <!-- Task List -->
+            <section class="task-panel task-list-panel">
+                <div class="section-heading list-heading">
+                    <div>
+                        <h2>Your task list</h2>
+                        <p id="list-subtitle">Manage everything in one place.</p>
+                    </div>
+                    <span class="task-total-badge" id="visible-count">0 tasks</span>
+                </div>
+
+                <div class="toolbar">
+                    <div class="search-box">
+                        <span aria-hidden="true">⌕</span>
+                        <label class="visually-hidden" for="search-input">Search tasks</label>
+                        <input
+                            type="search"
+                            id="search-input"
+                            placeholder="Search tasks..."
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="filter-group" aria-label="Filter tasks">
+                        <button class="filter-button active" data-filter="all" aria-pressed="true">
+                            All
+                        </button>
+                        <button class="filter-button" data-filter="active" aria-pressed="false">
+                            Active
+                        </button>
+                        <button class="filter-button" data-filter="completed" aria-pressed="false">
+                            Completed
+                        </button>
+                    </div>
+                </div>
+
+                <div id="task-list" class="task-list" aria-live="polite"></div>
+
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-icon">✓</div>
+                    <h3 id="empty-title">Your workspace is clear!</h3>
+                    <p id="empty-description">
+                        Add your first task above and start making progress.
+                    </p>
+                </div>
+            </section>
+
+            <footer class="main-footer">
+                <span>Built with HTML, CSS & JavaScript</span>
+                <span>Made for productivity <span class="footer-heart">♥</span></span>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Edit Task Dialog -->
+    <dialog id="edit-dialog" class="edit-dialog">
+        <form id="edit-form">
+            <div class="dialog-heading">
+                <div>
+                    <p class="eyebrow">TASK MANAGEMENT</p>
+                    <h2>Edit task</h2>
+                </div>
+                <button type="button" class="icon-button" id="close-dialog" aria-label="Close">
+                    ×
+                </button>
+            </div>
+
+            <label for="edit-input">Task title</label>
+            <input
+                type="text"
+                id="edit-input"
+                maxlength="150"
+                required
+                autocomplete="off"
+            >
+
+            <div class="dialog-actions">
+                <button type="button" class="secondary-button" id="cancel-edit">
+                    Cancel
+                </button>
+                <button type="submit" class="primary-button">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Delete Confirmation Dialog -->
+    <dialog id="delete-dialog" class="edit-dialog">
+        <form id="delete-form">
+            <div class="dialog-heading">
+                <div>
+                    <p class="eyebrow">PLEASE CONFIRM</p>
+                    <h2>Delete this task?</h2>
+                </div>
+                <button type="button" class="icon-button" id="close-delete-dialog" aria-label="Close">
+                    
+                </button>
+            </div>
+
+            <p class="dialog-description">
+                This task will be permanently removed from your list.
+            </p>
+
+            <div class="dialog-actions">
+                <button type="button" class="secondary-button" id="cancel-delete">
+                    Keep Task
+                </button>
+                <button type="submit" class="danger-button">
+                    Delete Task
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
